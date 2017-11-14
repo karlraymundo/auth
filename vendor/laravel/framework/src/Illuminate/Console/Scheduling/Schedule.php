@@ -74,13 +74,12 @@ class Schedule
      * Add a new job callback event to the schedule.
      *
      * @param  object|string  $job
-     * @param  string|null  $queue
      * @return \Illuminate\Console\Scheduling\CallbackEvent
      */
-    public function job($job, $queue = null)
+    public function job($job)
     {
-        return $this->call(function () use ($job, $queue) {
-            dispatch(is_string($job) ? resolve($job) : $job)->onQueue($queue);
+        return $this->call(function () use ($job) {
+            dispatch(is_string($job) ? resolve($job) : $job);
         })->name(is_string($job) ? $job : get_class($job));
     }
 
@@ -127,7 +126,7 @@ class Schedule
      * Get all of the events on the schedule that are due.
      *
      * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function dueEvents($app)
     {
